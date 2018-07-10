@@ -1,0 +1,4 @@
+#Template for the config.properties file
+
+spotify.baseUrl=https://api.spotify.com/v1
+spotify.clientId=YourClientIdGoesHere
