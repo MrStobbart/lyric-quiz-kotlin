@@ -17,4 +17,12 @@
     <string name="content_activity_auth_initial">This app allows you to play a quiz where you can guess the name of track by an extract of the lyrics.
 It uses your personal favourite tracks provided by Spotify. Login below to continue.</string>
     <string name="button_activity_auth_initial">Login with Spotify</string>
+    <string name="button_activity_main_start">Start playing</string>
+    <string name="button_activity_main_top_tracks">Top Tracks</string>
+    <string name="button_activity_main_top_artists">Top Artists</string>
+    <string name="button_activity_main_settings">Settings</string>
+    <string name="button_activity_main_logout">Logout</string>
+    <string name="button_activity_quiz_start">Start playing</string>
+    <string name="text_activity_quiz_start_explanation">Explanation what this is about</string>
 </resources>
+

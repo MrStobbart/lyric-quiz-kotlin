@@ -1,36 +1,20 @@
-package com.example.marekmeyer.lyricquiz_kotlin
+package com.example.marekmeyer.lyricquiz_kotlin.activities
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
-import android.content.pm.PackageManager
-import android.support.design.widget.Snackbar
+import android.content.Context
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
-import android.app.LoaderManager.LoaderCallbacks
-import android.content.CursorLoader
-import android.content.Loader
-import android.database.Cursor
-import android.net.Uri
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.text.TextUtils
-import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.ArrayAdapter
-import android.widget.TextView
 
-import android.Manifest.permission.READ_CONTACTS
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.http.SslError
+import android.support.v4.content.ContextCompat.startActivity
 import android.util.Log
-import android.view.KeyEvent
 import android.webkit.*
+import com.example.marekmeyer.lyricquiz_kotlin.R
+import java.net.URLDecoder
 
-import kotlinx.android.synthetic.main.activity_auth_spotify.*
-import java.lang.reflect.Method
 import java.net.URLEncoder
 import java.util.*
 
@@ -47,15 +31,18 @@ class AuthSpotify : AppCompatActivity(){
 
         setContentView(R.layout.activity_auth_spotify)
         val webView = findViewById<WebView>(R.id.spotifyWebView)
-        val urlToOpenText = findViewById<TextView>(R.id.spotifyUrlTextView)
+
 
         val spotifyRequestUrl: String = createSpotifyRequestUrl()
 
 
         webView.settings.javaScriptEnabled = true
 
-        webView.webViewClient = CustomWebViewClient()
-        webView.webChromeClient = WebChromeClient()
+        val customWebViewClient = CustomWebViewClient()
+        customWebViewClient.updateContext(this)
+        webView.webViewClient = customWebViewClient
+        webView.webChromeClient = CustomWebChromeClient()
+
         webView.loadUrl(spotifyRequestUrl)
     }
 
@@ -65,8 +52,8 @@ class AuthSpotify : AppCompatActivity(){
         val properties = Properties()
         properties.load(propertiesFile)
 
-        val scope = URLEncoder.encode("user-read-private user-read-email user-top-read", "UTF-8")
-        val redirectUrl = URLEncoder.encode("lyricquiz://callback", "UTF-8")
+        val scope = URLEncoder.encode("user-top-read", "UTF-8")
+        val redirectUrl = URLEncoder.encode("https://lyricquiz.io/callback/", "UTF-8")
         val clientId = URLEncoder.encode(properties.getProperty("spotify.clientId"), "UTF-8")
 
         // TODO test if this is working as intended with the url
@@ -84,27 +71,52 @@ class AuthSpotify : AppCompatActivity(){
 
 }
 
+class CustomWebChromeClient : WebChromeClient(){
+    private val TAG = "CustomWebViewClient"
+
+    override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean{
+        Log.e(TAG, consoleMessage.message())
+        return true
+    }
+
+
+}
+
 class CustomWebViewClient : WebViewClient() {
 
+    private var context: Context? = null
     private val TAG = "CustomWebViewClient"
+
+    fun updateContext(context: Context){
+        this.context = context
+    }
 
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest ): Boolean {
 
         // false means webView should handle handle url and true means the new url should not be loaded
         Log.e(TAG, "url loading detected ${request.url}")
         if(request.url.toString().contains("access_token")) {
-            // TODO get token here
+            val decodedUrl = URLDecoder.decode(request.url.toString(), "UTF-8")
+            val token = decodedUrl.split("#access_token=")[1].split("&token_type=")[0]
+            Log.e(TAG, "token split $token")
+            Log.e(TAG, decodedUrl)
+
+            val context = this.context
+            if(context != null){
+                val intent = Intent(context, MainNavigation::class.java)
+                intent.putExtra("token", token)
+                context.startActivity(intent)
+            }
+
+
             return true
         }
         return false
     }
 
-    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
 
+    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
         Log.e(TAG, "url loading detected ${url}")
-        if(url.contains("access_token")){
-            val token = false
-        }
         return false
     }
 
