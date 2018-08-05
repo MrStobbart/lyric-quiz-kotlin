@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
+import android.support.v7.widget.*
 import android.util.Log
 import com.example.marekmeyer.lyricquiz_kotlin.R
 import com.example.marekmeyer.lyricquiz_kotlin.models.DataManager
@@ -15,6 +16,8 @@ class TopArtists : AppCompatActivity() {
 
     private val TAG = "Top Artists"
     private val localBroadcastManager= LocalBroadcastManager.getInstance(this)
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: TopRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,13 +26,27 @@ class TopArtists : AppCompatActivity() {
         val filter = IntentFilter(DataManager.actionTopTracks)
         localBroadcastManager.registerReceiver(receiver, filter)
 
+
+        recyclerView = findViewById(R.id.topArtistRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutCompat.VERTICAL))
+
+
         processArtists()
     }
 
     fun processArtists(){
         if (DataManager.artistsAvailable){
             Log.e(TAG, "Top Artists ${DataManager.topArtists}")
+            adapter = TopRecyclerViewAdapter(DataManager.topArtists)
+            recyclerView.adapter = adapter
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        recyclerView.adapter = null
     }
 
 

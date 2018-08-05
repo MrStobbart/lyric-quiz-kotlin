@@ -22,7 +22,7 @@ object DataManager{
     lateinit var topTracks: List<Track>
     var tracksAvailable = false
 
-    lateinit var topArtists: List<String?>
+    lateinit var topArtists: List<Artist>
     var artistsAvailable = false
 
     lateinit var quiz: Quiz
@@ -38,7 +38,7 @@ object DataManager{
 
         AndroidNetworking.get("https://api.spotify.com/v1/me/top/tracks")
                 .addHeaders("Authorization", "Bearer $spotifyAuthToken")
-                .addQueryParameter("limit", "10")
+                .addQueryParameter("limit", "20")
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject?) {
@@ -75,7 +75,7 @@ object DataManager{
 
         AndroidNetworking.get("https://api.spotify.com/v1/me/top/artists")
                 .addHeaders("Authorization", "Bearer $spotifyAuthToken")
-                .addQueryParameter("limit", "10")
+                .addQueryParameter("limit", "20")
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject?) {
@@ -84,8 +84,8 @@ object DataManager{
                             val parser = Parser()
                             val json: JsonObject = parser.parse(StringBuilder(response.toString())) as JsonObject
 
-                            val nullableTopArtists: List<String?>? = json.array<JsonObject>("items")?.map {
-                                it.string("name")!!
+                            val nullableTopArtists: List<Artist>? = json.array<JsonObject>("items")?.map {
+                                Artist(it.string("name")!!)
                             }
 
                             if(nullableTopArtists != null) {
