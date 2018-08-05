@@ -5,13 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONArrayRequestListener
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.example.marekmeyer.lyricquiz_kotlin.R
-import org.json.JSONArray
-import org.json.JSONObject
+import com.example.marekmeyer.lyricquiz_kotlin.models.DataManager
 
 class MainNavigation : AppCompatActivity() {
 
@@ -21,30 +16,13 @@ class MainNavigation : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        spotifyAuthToken = intent.extras.getString("token")
+        DataManager.getTopArtists()
+        DataManager.getTopTracks()
+
 
         Log.e(TAG, "Token in Main activity: $spotifyAuthToken")
         setContentView(R.layout.activity_main_navigation)
 
-        AndroidNetworking.get("https://api.spotify.com/v1/me/top/artists")
-                .addHeaders("Authorization", "Bearer $spotifyAuthToken")
-                .addQueryParameter("limit", "10")
-                .build()
-                .getAsJSONObject(object : JSONObjectRequestListener{
-                    override fun onResponse(response: JSONObject?) {
-                        if(response != null){
-                            Log.e(TAG, "Response: $response")
-                        }
-                    }
-
-                    override fun onError(anError: ANError?) {
-                        if(anError != null){
-                            Log.e(TAG, "Error: $anError")
-                        }
-
-                    }
-
-                })
     }
 
     fun navigateStartQuiz(view: View){
@@ -55,12 +33,14 @@ class MainNavigation : AppCompatActivity() {
 
     fun navigateTopArtists(view: View){
         Log.i(TAG, "navigate top artists")
-
+        val intent = Intent(this, TopArtists::class.java)
+        startActivity(intent)
     }
 
     fun navigateTopTracks(view: View){
         Log.i(TAG, "navigate top tracks")
-
+        val intent = Intent(this, TopTracks::class.java)
+        startActivity(intent)
     }
 
     fun navigateSettings(view: View){

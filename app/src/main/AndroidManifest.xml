@@ -8,13 +8,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".App">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".activities.AuthInitial"
             android:label="@string/title_activity_auth_initial">
@@ -29,9 +29,17 @@
             android:label="@string/app_name"
             android:parentActivityName=".activities.AuthInitial" />
         <activity android:name=".activities.MainNavigation" />
-        <activity android:name=".activities.QuizStart" />
+        <activity
+            android:name=".activities.QuizStart"
+            android:parentActivityName=".activities.MainNavigation" />
         <activity android:name=".activities.QuizQuestion" />
-        <activity android:name=".activities.QuizResults"></activity>
+        <activity android:name=".activities.QuizResults" />
+        <activity
+            android:name=".activities.TopTracks"
+            android:parentActivityName=".activities.MainNavigation"/>
+        <activity
+            android:name=".activities.TopArtists"
+            android:parentActivityName=".activities.MainNavigation" />
     </application>
 
 </manifest>

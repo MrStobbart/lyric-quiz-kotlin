@@ -8,45 +8,34 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
-import android.view.View
 import com.example.marekmeyer.lyricquiz_kotlin.R
 import com.example.marekmeyer.lyricquiz_kotlin.models.DataManager
 
+class TopArtists : AppCompatActivity() {
 
-class QuizStart : AppCompatActivity(){
-
-    private val TAG: String = "Quiz Start"
-    private val localBroadcastManager = LocalBroadcastManager.getInstance(this)
+    private val TAG = "Top Artists"
+    private val localBroadcastManager= LocalBroadcastManager.getInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_quiz_start)
+        setContentView(R.layout.activity_top_artists)
 
-        val filter = IntentFilter()
-        filter.addAction("test")
+        val filter = IntentFilter(DataManager.actionTopTracks)
         localBroadcastManager.registerReceiver(receiver, filter)
+
+        processArtists()
     }
 
-    fun startPlaying(view: View){
-        Log.i(TAG, "navigate start quiz")
-        val intent = Intent(this, AuthSpotify::class.java)
-
-        startActivity(intent)
-
+    fun processArtists(){
+        if (DataManager.artistsAvailable){
+            Log.e(TAG, "Top Artists ${DataManager.topArtists}")
+        }
     }
 
-    override fun onDestroy() {
-        localBroadcastManager.unregisterReceiver(receiver)
-        super.onDestroy()
-    }
-
-    fun createQuiz(){
-
-    }
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-
+            processArtists()
         }
     }
 }

@@ -9,10 +9,10 @@ import android.os.Bundle
 
 import android.graphics.Bitmap
 import android.net.http.SslError
-import android.support.v4.content.ContextCompat.startActivity
 import android.util.Log
 import android.webkit.*
 import com.example.marekmeyer.lyricquiz_kotlin.R
+import com.example.marekmeyer.lyricquiz_kotlin.models.DataManager
 import java.net.URLDecoder
 
 import java.net.URLEncoder
@@ -89,6 +89,7 @@ class CustomWebViewClient : WebViewClient() {
 
     fun updateContext(context: Context){
         this.context = context
+
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest ): Boolean {
@@ -99,12 +100,12 @@ class CustomWebViewClient : WebViewClient() {
             val decodedUrl = URLDecoder.decode(request.url.toString(), "UTF-8")
             val token = decodedUrl.split("#access_token=")[1].split("&token_type=")[0]
             Log.e(TAG, "token split $token")
+            DataManager.spotifyAuthToken = token
             Log.e(TAG, decodedUrl)
 
             val context = this.context
             if(context != null){
                 val intent = Intent(context, MainNavigation::class.java)
-                intent.putExtra("token", token)
                 context.startActivity(intent)
             }
 
