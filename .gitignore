@@ -11,5 +11,7 @@
 /.idea
 config.properties
 
-.project
 /app/bin
+.project
+.classpath
+org.eclipse.*
