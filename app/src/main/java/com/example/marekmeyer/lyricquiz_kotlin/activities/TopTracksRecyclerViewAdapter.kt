@@ -27,7 +27,7 @@ class TopTracksRecyclerViewAdapter(private val values: List<Track>)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val track = values[position]
-        val displayName = "${track.name} (${track.artist})"
+        val displayName = "${track.name} (${track.artistString})"
         holder.itemNumberView.text = (position + 1).toString()
         holder.itemTextView.text = displayName
 

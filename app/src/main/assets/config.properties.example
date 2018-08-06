@@ -2,3 +2,7 @@
 
 spotify.baseUrl=https://api.spotify.com/v1
 spotify.clientId=YourClientIdGoesHere
+genius.baseUrl=https://api.genius.com
+genius.accessToken=YouGeniusClientAccessTokenGoesHere
+
+
