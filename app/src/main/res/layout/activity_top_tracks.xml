@@ -6,4 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".activities.TopTracks">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/topTracksRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
+
 </android.support.constraint.ConstraintLayout>

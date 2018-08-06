@@ -8,18 +8,15 @@ import android.widget.TextView
 import com.example.marekmeyer.lyricquiz_kotlin.R
 
 
-import com.example.marekmeyer.lyricquiz_kotlin.activities.dummy.DummyContent.DummyItem
 import com.example.marekmeyer.lyricquiz_kotlin.models.Artist
 
 import kotlinx.android.synthetic.main.fragment_top.view.*
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
- * TODO: Replace the implementation with code for your data type.
+ * [RecyclerView.Adapter] that can display an [Artist] item
  */
-class TopRecyclerViewAdapter(
-        private val values: List<Artist>)
-    : RecyclerView.Adapter<TopRecyclerViewAdapter.ViewHolder>() {
+class TopArtistsRecyclerViewAdapter(private val values: List<Artist>)
+    : RecyclerView.Adapter<TopArtistsRecyclerViewAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,12 +26,12 @@ class TopRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
+        val artist = values[position]
         holder.itemNumberView.text = (position + 1).toString()
-        holder.itemTextView.text = item.name
+        holder.itemTextView.text = artist.name
 
         with(holder.mView) {
-            tag = item
+            tag = artist
         }
     }
 

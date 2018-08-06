@@ -17,13 +17,13 @@ class TopArtists : AppCompatActivity() {
     private val TAG = "Top Artists"
     private val localBroadcastManager= LocalBroadcastManager.getInstance(this)
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: TopRecyclerViewAdapter
+    private lateinit var adapter: TopArtistsRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_top_artists)
 
-        val filter = IntentFilter(DataManager.actionTopTracks)
+        val filter = IntentFilter(DataManager.actionTopArtists)
         localBroadcastManager.registerReceiver(receiver, filter)
 
 
@@ -39,7 +39,7 @@ class TopArtists : AppCompatActivity() {
     fun processArtists(){
         if (DataManager.artistsAvailable){
             Log.e(TAG, "Top Artists ${DataManager.topArtists}")
-            adapter = TopRecyclerViewAdapter(DataManager.topArtists)
+            adapter = TopArtistsRecyclerViewAdapter(DataManager.topArtists)
             recyclerView.adapter = adapter
         }
     }
