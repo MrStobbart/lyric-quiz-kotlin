@@ -189,11 +189,13 @@ object DataManager{
             Log.e(TAG, "Start coroutine")
             val lyricsUrl = searchTrackOnGenius("Takin' it back", "Headhunterz").await()
             Log.e(TAG, "Lyrics url: $lyricsUrl")
-            val lyrics = scrapeLyrics(lyricsUrl).await()
-            Log.e(TAG, "Lyrics: $lyrics")
-            val extractedLyricsForQuestion = selectLyrics(lyrics)
-            Log.e(TAG,"Extracted lyrics:\n$extractedLyricsForQuestion")
-            val test = "asd"
+            if(lyricsUrl != null){
+                val lyrics = scrapeLyrics(lyricsUrl).await()
+                Log.e(TAG, "Lyrics: $lyrics")
+                val extractedLyricsForQuestion = selectLyrics(lyrics)
+                Log.e(TAG,"Extracted lyrics:\n$extractedLyricsForQuestion")
+            }
+            Log.e(TAG, "We need some error handling")
 
         }
 
@@ -211,14 +213,17 @@ object DataManager{
         async {
 
             val lyricsUrl = searchTrackOnGenius(track, artist).await()
-            val lyrics = scrapeLyrics(lyricsUrl).await()
-            val extractedLyricsForQuestion = selectLyrics(lyrics)
+            if(lyricsUrl != null){
+                val lyrics = scrapeLyrics(lyricsUrl).await()
+                val extractedLyricsForQuestion = selectLyrics(lyrics)
+                Log.e(TAG,"Extracted lyrics:\n$extractedLyricsForQuestion")
+            }
+            Log.e(TAG, "We need some error handling")
 
-            Log.e(TAG,"Extracted lyrics:\n$extractedLyricsForQuestion")
         }
     }
 
-    private fun searchTrackOnGenius(track: String, artist: String): Deferred<String>{
+    private fun searchTrackOnGenius(track: String, artist: String): Deferred<String?>{
 
         Log.e(TAG, "in search on genius")
         val trackAndArtist = URLEncoder.encode("$track, $artist", "UTF-8")
@@ -228,7 +233,7 @@ object DataManager{
         val accessToken = URLEncoder.encode(properties.getProperty("genius.accessToken"), "UTF-8")
 
         return async (CommonPool){
-            val noLyricsFound = ""
+            val noLyricsFound = null
 
 
             val headers = mapOf("Authorization" to "Bearer $accessToken")
