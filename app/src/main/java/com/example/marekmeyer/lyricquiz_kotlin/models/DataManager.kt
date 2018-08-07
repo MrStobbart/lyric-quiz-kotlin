@@ -13,10 +13,7 @@ import com.beust.klaxon.Parser
 import com.example.marekmeyer.lyricquiz_kotlin.App
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.httpGet
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.*
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -28,6 +25,7 @@ object DataManager{
 
     const val actionTopTracks = "ACTION_TOP_TRACKS"
     const val actionTopArtists = "ACTION_TOP_ARTISTS"
+    const val actionQuiz = "ACTION_QUIZ"
 
     private val TAG = "Data Manager"
     private val localBroadcastManager = LocalBroadcastManager.getInstance(App.instance.applicationContext)
@@ -40,6 +38,8 @@ object DataManager{
     var artistsAvailable = false
 
     lateinit var quiz: Quiz
+    var quizAvailable = false
+
 
 
     private val propertiesFile = App.instance.assets.open("config.properties")
@@ -124,6 +124,9 @@ object DataManager{
         if(nullableTopArtists != null) {
             topTracks = nullableTopArtists
             tracksAvailable = true
+
+            // Also trigger question creation when tracks are available
+            createQuestions()
             val intent = Intent(actionTopTracks)
             localBroadcastManager.sendBroadcast(intent)
         }
@@ -167,6 +170,7 @@ object DataManager{
                 }
             }
         }
+
         return artistsString
 
     }
@@ -174,51 +178,102 @@ object DataManager{
 
     fun createQuestions(){
 
+        val numberOfTracksToSelect = 5
+        val numberOfLyricLinesInQuestion = 2
+
+
         val shuffledTracks = topTracks.shuffled()
-        val selectedTracks = shuffledTracks.slice(IntRange(0, 4))
+        val selectedTracks = shuffledTracks.slice(IntRange(0, numberOfTracksToSelect - 1))
         Log.e(TAG, "Number of selected tracks: ${selectedTracks.size}")
 
 
+        val deferredTrackListWithLyrics = selectedTracks.mapIndexed { index, track ->
+            getLyricsRecursion(shuffledTracks, index)
+        }
 
-        val selectedLyrics = selectLyrics("\\n\\nNow we gonna do this like we used to \\n Taking it back to the roots, you know \\n \\n Repeat it in your mind \\n You better understand \\n We gonna start a fire \\n That wasn't supposed to end \\n We taking it back [x3] \\n Yeah, we taking it back \\n \\n We gonna keep it real \\n The rest down the drain \\n We run melodies \\n But you know we ain't playing \\n We taking it back [x3] \\n Yeah, we taking it back \\n \\n Yeah \\n We taking it back \\n Come on \\n \\n Repeat it in your mind \\n You better understand \\n We gonna start a fire \\n That wasn't supposed to end \\n We taking it back [x3] \\n Yeah, we taking it back \\n \\n We gonna keep it real \\n The rest down the drain \\n We run melodies \\n But you know we ain't playing \\n We taking it back [x3] \\n Come on \\n \\n We taking it back [x3] \\n Ha, yeah \\n We taking it back [x3] \\n Let's go \\n We taking it back [x3] \\n Ha, yeah \\n We ain't playing no games no more\n")
+        launch {
 
-        Log.e(TAG, "Selected lyrics: $selectedLyrics")
-
-        async(CommonPool) {
-
-            Log.e(TAG, "Start coroutine")
-            val lyricsUrl = searchTrackOnGenius("Takin' it back", "Headhunterz").await()
-            Log.e(TAG, "Lyrics url: $lyricsUrl")
-            if(lyricsUrl != null){
-                val lyrics = scrapeLyrics(lyricsUrl).await()
-                Log.e(TAG, "Lyrics: $lyrics")
-                val extractedLyricsForQuestion = selectLyrics(lyrics)
-                Log.e(TAG,"Extracted lyrics:\n$extractedLyricsForQuestion")
+            val tracksWithLyrics = deferredTrackListWithLyrics.map { deferredTrack ->
+                deferredTrack.await()
             }
-            Log.e(TAG, "We need some error handling")
+
+            Log.e(TAG, "Tracks with lyrics length: ${tracksWithLyrics.size}")
+            Log.e(TAG, "Tracks with lyrics: $tracksWithLyrics")
+            val tracksWithLyricsNotNull = tracksWithLyrics.filterNotNull()
+            Log.e(TAG, "Tracks with lyrics not null length: ${tracksWithLyricsNotNull.size}")
+
+            val questions = tracksWithLyricsNotNull.map { track ->
+
+                val choices = topTracks.shuffled().slice((0..3))
+                Log.e(TAG, "topTracks: $topTracks")
+                Log.e(TAG, "shuffled Tracks: $shuffledTracks")
+                Log.e(TAG, "choices: $choices")
+                val choiceNames= choices.map { it.name }.toMutableList()
+
+                if(!choiceNames.any { choice -> choice.contains(track.name) }){
+                    choiceNames[0] = track.name
+                }
+
+                val shuffledChoices = choiceNames.shuffled()
+
+                return@map Question(shuffledChoices, track.lyrics, track.name)
+            }
+
+            quiz = Quiz(questions)
+            quizAvailable = true
+            val intent = Intent(actionQuiz)
+            localBroadcastManager.sendBroadcast(intent)
+
+            Log.e(TAG, "Quiz: $quiz")
 
         }
 
 
-    }
-
-    private fun getLyricsRecursion(tracks: List<Track>, index: Int){
 
     }
 
-    private fun getLyrics(tracks: List<Track>, index: Int){
-        val artist = tracks[index].artists[0].name
-        val track = tracks[index].name
+    private fun getLyricsRecursion(tracks: List<Track>, index: Int): Deferred<Track?>{
 
-        async {
+        return async {
+            val track = getLyrics(tracks, index).await()
 
-            val lyricsUrl = searchTrackOnGenius(track, artist).await()
+            if(track != null){
+                return@async track
+            }
+
+            val nextIndexToTry = index + 5
+            if(nextIndexToTry >= tracks.size){
+                Log.e(TAG, "No tracks left")
+                return@async null
+            }
+
+            return@async getLyricsRecursion(tracks, nextIndexToTry).await()
+
+
+        }
+    }
+
+    private fun getLyrics(tracks: List<Track>, index: Int): Deferred<Track?>{
+
+        val artist = tracks[index].artists[0]
+        val track = tracks[index]
+
+        return async {
+
+            val lyricsUrl = searchTrackOnGenius(track.name, artist.name).await()
+
             if(lyricsUrl != null){
+
                 val lyrics = scrapeLyrics(lyricsUrl).await()
                 val extractedLyricsForQuestion = selectLyrics(lyrics)
                 Log.e(TAG,"Extracted lyrics:\n$extractedLyricsForQuestion")
+                track.lyrics = extractedLyricsForQuestion
+                return@async track
+
             }
+
             Log.e(TAG, "We need some error handling")
+            return@async null
 
         }
     }
@@ -357,7 +412,6 @@ object DataManager{
             return@foldIndexed selectedLines
         }
 
-        Log.e(TAG, "Selected lines in function $selectedLines")
         return selectedLines
 
     }
