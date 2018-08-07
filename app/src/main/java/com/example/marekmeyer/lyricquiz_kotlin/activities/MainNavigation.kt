@@ -43,13 +43,11 @@ class MainNavigation : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun navigateSettings(view: View){
-        Log.i(TAG, "navigate settings")
-
-    }
 
     fun navigateLogout(view: View){
         Log.i(TAG, "navigate logout")
+        val intent = Intent(this, AuthInitial::class.java)
+        startActivity(intent)
 
     }
 }

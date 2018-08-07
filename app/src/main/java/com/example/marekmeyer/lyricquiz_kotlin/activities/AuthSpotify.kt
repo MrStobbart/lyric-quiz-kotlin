@@ -65,6 +65,7 @@ class AuthSpotify : AppCompatActivity(){
         url += "&scope=$scope"
         url += "&redirect_uri=$redirectUrl"
         url += "&state=$requestIdentifier"
+        url += "&show_dialog=true"
 
         return  url
     }

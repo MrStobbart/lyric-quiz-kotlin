@@ -46,19 +46,6 @@
         app:layout_constraintTop_toBottomOf="@+id/button_2"
         android:onClick="navigateTopTracks"/>
 
-    <Button
-        android:id="@+id/button_4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/button_activity_main_settings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_3"
-        android:onClick="navigateSettings"/>
-
 
     <Button
         android:id="@+id/button_5"
@@ -70,7 +57,7 @@
         android:text="@string/button_activity_main_logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_4"
+        app:layout_constraintTop_toBottomOf="@+id/button_3"
         android:onClick="navigateLogout"/>
 
 
