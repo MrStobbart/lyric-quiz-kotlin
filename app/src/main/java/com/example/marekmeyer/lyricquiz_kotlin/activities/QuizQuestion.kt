@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -64,11 +65,15 @@ class QuizQuestion : AppCompatActivity() {
             R.id.quizQuestionTrack4 -> selectedTrackName = question.choices[3]
         }
 
+        val clickedButton: Button = findViewById(clickedButtonId)
+
         if(selectedTrackName == question.trackName){
             Log.e(TAG, "right answer")
-            DataManager.quiz.questions[DataManager.quiz.questionCounter].correct
+            clickedButton.setBackgroundColor(Color.parseColor("#f2fae3"))
+            DataManager.quiz.questions[DataManager.quiz.questionCounter].correct = true
         }else{
-            !DataManager.quiz.questions[DataManager.quiz.questionCounter].correct
+            clickedButton.setBackgroundColor(Color.parseColor("#fff1f0"))
+            DataManager.quiz.questions[DataManager.quiz.questionCounter].correct = false
             Log.e(TAG, "wrong answer")
         }
 
