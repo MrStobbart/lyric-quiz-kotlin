@@ -13,7 +13,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_auth_initial">Welcome to lyricquiz!</string>
+    <string name="title_activity_auth_initial">Lyricquiz 1</string>
     <string name="content_activity_auth_initial">This app allows you to play a quiz where you can guess the name of track by an extract of the lyrics.
 It uses your personal favourite tracks provided by Spotify. Login below to continue.</string>
     <string name="button_activity_auth_initial">Login with Spotify</string>
