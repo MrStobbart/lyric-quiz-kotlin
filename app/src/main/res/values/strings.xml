@@ -24,5 +24,8 @@ It uses your personal favourite tracks provided by Spotify. Login below to conti
     <string name="button_activity_main_logout">Logout</string>
     <string name="button_activity_quiz_start">Start playing</string>
     <string name="text_activity_quiz_start_explanation">Explanation what this is about</string>
+    <string name="text_activity_quiz_start_warning">Quiz still loading, this can take up to 10 seconds</string>
+    <string name="button_activity_quiz_question_next_question">Next question</string>
+    <string name="button_activity_quiz_results_back_menu">Back to menu</string>
 </resources>
 

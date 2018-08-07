@@ -60,7 +60,7 @@ object DataManager{
 
         AndroidNetworking.get("https://api.spotify.com/v1/me/top/tracks")
                 .addHeaders("Authorization", "Bearer $spotifyAuthToken")
-                .addQueryParameter("limit", "20")
+                .addQueryParameter("limit", "50")
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject?) {
@@ -88,7 +88,7 @@ object DataManager{
 
         AndroidNetworking.get("https://api.spotify.com/v1/me/top/artists")
                 .addHeaders("Authorization", "Bearer $spotifyAuthToken")
-                .addQueryParameter("limit", "20")
+                .addQueryParameter("limit", "50")
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject?) {
