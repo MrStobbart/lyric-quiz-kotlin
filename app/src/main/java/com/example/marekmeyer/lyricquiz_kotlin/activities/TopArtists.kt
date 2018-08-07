@@ -26,6 +26,7 @@ class TopArtists : AppCompatActivity() {
         val filter = IntentFilter(DataManager.actionTopArtists)
         localBroadcastManager.registerReceiver(receiver, filter)
 
+        title = resources.getString(R.string.title_activity_top_artists)
 
         recyclerView = findViewById(R.id.topArtistRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)

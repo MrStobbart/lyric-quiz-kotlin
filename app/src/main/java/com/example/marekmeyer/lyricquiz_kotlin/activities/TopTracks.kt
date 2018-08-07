@@ -28,6 +28,7 @@ class TopTracks : AppCompatActivity() {
         localBroadcastManager.registerReceiver(receiver, filter)
 
 
+        title = resources.getString(R.string.title_activity_top_tracks)
         recyclerView = findViewById(R.id.topTracksRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.itemAnimator = DefaultItemAnimator()

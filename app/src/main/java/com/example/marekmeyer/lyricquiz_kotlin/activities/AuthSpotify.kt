@@ -1,6 +1,7 @@
 package com.example.marekmeyer.lyricquiz_kotlin.activities
 
 import android.annotation.TargetApi
+import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -11,6 +12,7 @@ import android.graphics.Bitmap
 import android.net.http.SslError
 import android.util.Log
 import android.webkit.*
+import android.widget.Toolbar
 import com.example.marekmeyer.lyricquiz_kotlin.R
 import com.example.marekmeyer.lyricquiz_kotlin.models.DataManager
 import java.net.URLDecoder
@@ -33,6 +35,7 @@ class AuthSpotify : AppCompatActivity(){
         val webView = findViewById<WebView>(R.id.spotifyWebView)
 
 
+
         val spotifyRequestUrl: String = createSpotifyRequestUrl()
 
 
@@ -44,6 +47,16 @@ class AuthSpotify : AppCompatActivity(){
         webView.webChromeClient = CustomWebChromeClient()
 
         webView.loadUrl(spotifyRequestUrl)
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        supportActionBar!!.hide()
+    }
+
+    public override fun onStop() {
+        super.onStop()
+        supportActionBar!!.show()
     }
 
     private fun createSpotifyRequestUrl(): String{

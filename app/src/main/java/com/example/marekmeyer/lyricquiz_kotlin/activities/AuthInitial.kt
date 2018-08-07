@@ -12,6 +12,7 @@ class AuthInitial : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth_initial)
+        title = resources.getString(R.string.title_activity_auth_initial)
 
     }
 

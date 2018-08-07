@@ -24,6 +24,7 @@ class QuizStart : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_start)
 
+        title = resources.getString(R.string.title_activity_quiz_start)
         val filter = IntentFilter()
         filter.addAction(DataManager.actionQuiz)
         localBroadcastManager.registerReceiver(receiver, filter)

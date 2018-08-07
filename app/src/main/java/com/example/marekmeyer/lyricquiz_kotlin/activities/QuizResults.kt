@@ -18,6 +18,7 @@ class QuizResults : AppCompatActivity() {
         setContentView(R.layout.activity_quiz_results)
         resultsTextView = findViewById(R.id.quizResultsTextView)
 
+        title = resources.getString(R.string.title_activity_quiz_results)
         showQuizResults()
     }
 

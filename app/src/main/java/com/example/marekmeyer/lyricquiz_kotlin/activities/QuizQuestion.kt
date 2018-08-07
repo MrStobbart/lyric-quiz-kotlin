@@ -46,6 +46,8 @@ class QuizQuestion : AppCompatActivity() {
         buttonNextQuestion= findViewById(R.id.quizQuestionNextQuestion)
         textViewWarning = findViewById(R.id.quizQuestionWarning)
 
+        title = "Question ${DataManager.quiz.questionCounter + 1}"
+
         if(!DataManager.quizAvailable) {
             Log.e(TAG, "Quiz not available")
         }
