@@ -27,6 +27,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/button_activity_quiz_results_back_menu"
         android:onClick="backToMenu"
+        android:backgroundTint="@color/colorButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quizResultsTextView" />

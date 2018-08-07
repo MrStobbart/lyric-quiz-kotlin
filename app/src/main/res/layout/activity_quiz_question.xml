@@ -27,6 +27,7 @@
         android:layout_marginTop="8dp"
         android:text="Button"
         android:onClick="selectAnswer"
+        android:backgroundTint="@color/colorButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quizQuestionLyrics" />
@@ -38,6 +39,7 @@
         android:layout_marginEnd="8dp"
         android:text="Button"
         android:onClick="selectAnswer"
+        android:backgroundTint="@color/colorButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quizQuestionTrack1" />
@@ -49,6 +51,7 @@
         android:layout_marginEnd="8dp"
         android:text="Button"
         android:onClick="selectAnswer"
+        android:backgroundTint="@color/colorButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quizQuestionTrack2" />
@@ -59,6 +62,7 @@
         android:layout_height="wrap_content"
         android:text="Button"
         android:onClick="selectAnswer"
+        android:backgroundTint="@color/colorButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quizQuestionTrack3" />
@@ -69,6 +73,7 @@
         android:layout_height="wrap_content"
         android:text="@string/button_activity_quiz_question_next_question"
         android:onClick="nextQuestion"
+        android:backgroundTint="@color/colorButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quizQuestionTrack4" />
