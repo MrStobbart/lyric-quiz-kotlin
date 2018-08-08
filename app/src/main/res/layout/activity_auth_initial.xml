@@ -10,18 +10,13 @@
         tools:context=".activities.AuthInitial">
 
 
-
         <TextView
             android:id="@+id/content_auth_initial"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:padding="40dp"
             android:text="@string/content_activity_auth_initial"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textAlignment="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,11 +24,11 @@
             android:id="@+id/button_auth_initial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="@string/button_activity_auth_initial"
             android:backgroundTint="@color/colorButton"
             app:layout_constraintEnd_toEndOf="parent"
