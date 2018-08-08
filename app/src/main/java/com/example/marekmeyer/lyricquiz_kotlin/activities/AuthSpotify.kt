@@ -110,12 +110,13 @@ class CustomWebViewClient : WebViewClient() {
 
         // false means webView should handle handle url and true means the new url should not be loaded
         Log.e(TAG, "url loading detected ${request.url}")
+
         if(request.url.toString().contains("access_token")) {
+
             val decodedUrl = URLDecoder.decode(request.url.toString(), "UTF-8")
             val token = decodedUrl.split("#access_token=")[1].split("&token_type=")[0]
-            Log.e(TAG, "token split $token")
+
             DataManager.spotifyAuthToken = token
-            Log.e(TAG, decodedUrl)
 
             val context = this.context
             if(context != null){
