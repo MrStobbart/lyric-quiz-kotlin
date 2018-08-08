@@ -50,6 +50,7 @@ class QuizStart : AppCompatActivity(){
     }
 
     private fun navigateToFirstQuestion(){
+        startPlayingClicked = false
         val intent = Intent(this, QuizQuestion::class.java)
         startActivity(intent)
     }
