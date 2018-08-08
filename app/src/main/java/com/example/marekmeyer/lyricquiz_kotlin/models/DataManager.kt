@@ -109,7 +109,6 @@ object DataManager{
     }
 
     private fun extractTopTracksFromJsonResponse(response: JSONObject){
-        Log.e(TAG, "Response: $response")
         val parser = Parser()
         val json: JsonObject = parser.parse(StringBuilder(response.toString())) as JsonObject
 
@@ -134,7 +133,6 @@ object DataManager{
     }
 
     private fun extractTopArtistsFromJsonResponse(response: JSONObject){
-        Log.e(TAG, "Response: $response")
         val parser = Parser()
         val json: JsonObject = parser.parse(StringBuilder(response.toString())) as JsonObject
 
@@ -184,7 +182,6 @@ object DataManager{
 
         val shuffledTracks = topTracks.shuffled()
         val selectedTracks = shuffledTracks.slice(IntRange(0, numberOfTracksToSelect - 1))
-        Log.e(TAG, "Number of selected tracks: ${selectedTracks.size}")
 
 
         val deferredTrackListWithLyrics = selectedTracks.mapIndexed { index, track ->
@@ -197,17 +194,11 @@ object DataManager{
                 deferredTrack.await()
             }
 
-            Log.e(TAG, "Tracks with lyrics length: ${tracksWithLyrics.size}")
-            Log.e(TAG, "Tracks with lyrics: $tracksWithLyrics")
             val tracksWithLyricsNotNull = tracksWithLyrics.filterNotNull()
-            Log.e(TAG, "Tracks with lyrics not null length: ${tracksWithLyricsNotNull.size}")
 
             val questions = tracksWithLyricsNotNull.map { track ->
 
                 val choices = topTracks.shuffled().slice((0..3))
-                Log.e(TAG, "topTracks: $topTracks")
-                Log.e(TAG, "shuffled Tracks: $shuffledTracks")
-                Log.e(TAG, "choices: $choices")
                 val choiceNames= choices.map { it.name }.toMutableList()
 
                 if(!choiceNames.any { choice -> choice.contains(track.name) }){
@@ -223,8 +214,6 @@ object DataManager{
             quizAvailable = true
             val intent = Intent(actionQuiz)
             localBroadcastManager.sendBroadcast(intent)
-
-            Log.e(TAG, "Quiz: $quiz")
 
         }
 
@@ -243,7 +232,6 @@ object DataManager{
 
             val nextIndexToTry = index + 5
             if(nextIndexToTry >= tracks.size){
-                Log.e(TAG, "No tracks left")
                 return@async null
             }
 
@@ -266,13 +254,11 @@ object DataManager{
 
                 val lyrics = scrapeLyrics(lyricsUrl).await()
                 val extractedLyricsForQuestion = selectLyrics(lyrics)
-                Log.e(TAG,"Extracted lyrics:\n$extractedLyricsForQuestion")
                 track.lyrics = extractedLyricsForQuestion
                 return@async track
 
             }
 
-            Log.e(TAG, "We need some error handling")
             return@async null
 
         }
@@ -280,7 +266,6 @@ object DataManager{
 
     private fun searchTrackOnGenius(track: String, artist: String): Deferred<String?>{
 
-        Log.e(TAG, "in search on genius")
         val trackAndArtist = URLEncoder.encode("$track, $artist", "UTF-8")
         val baseUrl = properties.getProperty("genius.baseUrl")
         val url = "$baseUrl/search?q=$trackAndArtist"
@@ -294,19 +279,14 @@ object DataManager{
             val headers = mapOf("Authorization" to "Bearer $accessToken")
             val (request, response, result) = url.httpGet().header(headers).awaitStringResponse()
 
-            Log.e(TAG, "request: $request")
-            Log.e(TAG, "response: $response")
             val(data, error) = result
             if(error != null){
-                Log.e(TAG, "Error: $error")
                 return@async noLyricsFound
             }
 
             if(data == null){
-                Log.e(TAG, "No data")
                 return@async noLyricsFound
             }
-            Log.e(TAG, "data: $data")
 
             val parser = Parser()
             val json: JsonObject = parser.parse(StringBuilder(data)) as JsonObject
@@ -315,11 +295,9 @@ object DataManager{
                     ?.array<JsonObject>("hits")
                     ?: return@async noLyricsFound
 
-            Log.e(TAG, "found tracks: $foundTracks")
             val noTrackFound = foundTracks.size == 0
 
             if(noTrackFound){
-                Log.e(TAG, "No track found $track $artist")
                 return@async noLyricsFound
             }
 
@@ -331,30 +309,25 @@ object DataManager{
                     ?: noLyricsFound
 
             if(fullFoundTitle == noLyricsFound){
-                Log.e(TAG, "No title found")
                 return@async noLyricsFound
             }
 
             val foundTitleMatches = fullFoundTitle.contains(track.toLowerCase())
             val foundArtistMatches = fullFoundTitle.contains(artist.toLowerCase())
 
-            Log.e(TAG, "if statement $foundTitleMatches\n $foundArtistMatches\n $fullFoundTitle")
             if(foundTitleMatches && foundArtistMatches){
-                Log.e(TAG, "Daatatata, $data")
                 val lyricsUrl = foundTracks[0]
                         .obj("result")
                         ?.string("url")
                         ?: noLyricsFound
 
                 if(lyricsUrl == noLyricsFound){
-                    Log.e(TAG, "No lyrics url found")
                     return@async noLyricsFound
                 }
 
                 return@async lyricsUrl
             }
 
-            Log.e(TAG, "Track did not match")
             return@async noLyricsFound
 
         }

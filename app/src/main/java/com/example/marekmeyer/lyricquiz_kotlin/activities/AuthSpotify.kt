@@ -69,7 +69,6 @@ class AuthSpotify : AppCompatActivity(){
         val redirectUrl = URLEncoder.encode("https://lyricquiz.io/callback/", "UTF-8")
         val clientId = URLEncoder.encode(properties.getProperty("spotify.clientId"), "UTF-8")
 
-        // TODO test if this is working as intended with the url
         val requestIdentifier = URLEncoder.encode(UUID.randomUUID().toString(), "UTF-8")
 
         var url = "https://accounts.spotify.com/authorize"
@@ -109,8 +108,6 @@ class CustomWebViewClient : WebViewClient() {
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest ): Boolean {
 
         // false means webView should handle handle url and true means the new url should not be loaded
-        Log.e(TAG, "url loading detected ${request.url}")
-
         if(request.url.toString().contains("access_token")) {
 
             val decodedUrl = URLDecoder.decode(request.url.toString(), "UTF-8")
@@ -132,12 +129,10 @@ class CustomWebViewClient : WebViewClient() {
 
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-        Log.e(TAG, "url loading detected ${url}")
         return false
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-        Log.e("Spotify auth", "Hurra we got an ssl error")
         // Ignore SSL certificate errors
         handler.proceed()
     }

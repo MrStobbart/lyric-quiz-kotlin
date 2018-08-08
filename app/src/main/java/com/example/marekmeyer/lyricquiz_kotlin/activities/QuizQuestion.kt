@@ -86,13 +86,11 @@ class QuizQuestion : AppCompatActivity() {
         val clickedButton: AppCompatButton = findViewById(clickedButtonId)
 
         if(selectedTrackName == question.trackName){
-            Log.e(TAG, "right answer")
             clickedButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#f2fae3"))
             DataManager.quiz.questions[DataManager.quiz.questionCounter].correct = true
         }else{
             clickedButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#fff1f0"))
             DataManager.quiz.questions[DataManager.quiz.questionCounter].correct = false
-            Log.e(TAG, "wrong answer")
         }
 
     }

@@ -21,7 +21,6 @@ class MainNavigation : AppCompatActivity() {
 
         title = resources.getString(R.string.title_activity_main_navigation)
 
-        Log.e(TAG, "Token in Main activity: $spotifyAuthToken")
         setContentView(R.layout.activity_main_navigation)
 
     }

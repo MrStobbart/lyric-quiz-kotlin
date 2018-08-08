@@ -39,7 +39,6 @@ class TopArtists : AppCompatActivity() {
 
     fun processArtists(){
         if (DataManager.artistsAvailable){
-            Log.e(TAG, "Top Artists ${DataManager.topArtists}")
             adapter = TopArtistsRecyclerViewAdapter(DataManager.topArtists)
             recyclerView.adapter = adapter
         }
