@@ -39,7 +39,7 @@ class TopTracks : AppCompatActivity() {
     }
 
     fun processTracks(){
-        if (DataManager.artistsAvailable){
+        if (DataManager.tracksAvailable){
             Log.e(TAG, "Top Tracks ${DataManager.topTracks}")
             adapter = TopTracksRecyclerViewAdapter(DataManager.topTracks)
             recyclerView.adapter = adapter
