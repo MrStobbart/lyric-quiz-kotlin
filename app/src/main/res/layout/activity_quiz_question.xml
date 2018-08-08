@@ -73,6 +73,7 @@
         android:layout_height="wrap_content"
         android:text="@string/button_activity_quiz_question_next_question"
         android:onClick="nextQuestion"
+        android:width="150dp"
         android:backgroundTint="@color/colorButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
