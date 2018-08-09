@@ -46,7 +46,7 @@ class QuizQuestion : AppCompatActivity() {
         buttonNextQuestion= findViewById(R.id.quizQuestionNextQuestion)
         textViewWarning = findViewById(R.id.quizQuestionWarning)
 
-        title = "Question ${DataManager.quiz.questionCounter + 1}"
+        title = "Lyricquiz 1 - Question ${DataManager.quiz.questionCounter + 1}"
 
         if(!DataManager.quizAvailable) {
             Log.e(TAG, "Quiz not available")
@@ -68,6 +68,7 @@ class QuizQuestion : AppCompatActivity() {
     fun selectAnswer(view: View){
         textViewWarning.text = ""
         if(answerSelected){
+            textViewWarning.text = "An answer was already selected"
             return
         }
         buttonNextQuestion.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#ebf7fd"))

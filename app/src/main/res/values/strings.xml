@@ -13,12 +13,12 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_auth_initial">Welcome to Lyricquiz!</string>
-    <string name="title_activity_main_navigation">Lyricquiz</string>
-    <string name="title_activity_quiz_start">What is this about?</string>
-    <string name="title_activity_quiz_results">Your results</string>
-    <string name="title_activity_top_tracks">Your top 50 tracks</string>
-    <string name="title_activity_top_artists">Your top 50 artists</string>
+    <string name="title_activity_auth_initial">Lyricquiz 1 - Welcome to Lyricquiz!</string>
+    <string name="title_activity_main_navigation">Lyricquiz 1</string>
+    <string name="title_activity_quiz_start">Lyricquiz 1 - Introduction</string>
+    <string name="title_activity_quiz_results">Lyricquiz 1 - Your results</string>
+    <string name="title_activity_top_tracks">Lyricquiz 1 - Top 50 tracks</string>
+    <string name="title_activity_top_artists">Lyricquiz 1 - Top 50 artists</string>
     <string name="content_activity_auth_initial">
         "This app allows you to play a quiz where you can guess the name of track by an extract of the lyrics. \n
 It uses your personal favourite tracks provided by Spotify. Login below to continue."
@@ -34,7 +34,8 @@ It uses your personal favourite tracks provided by Spotify. Login below to conti
         "This quiz will have five questions.\n
 Each question includes two consecutive lines of lyrics.\n
 These lyrics where extracted from one of the four presented tracks.\n
-Select the right track and continue :)"
+Select the right track and continue :)\n
+If you selected the right answer the button will become green, otherwise it will be red."
     </string>
     <string name="text_activity_quiz_start_warning">Quiz still loading, this can take up to 10 seconds</string>
     <string name="button_activity_quiz_question_next_question">Next question</string>
