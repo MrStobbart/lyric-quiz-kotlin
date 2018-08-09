@@ -15,3 +15,7 @@ config.properties
 .project
 .classpath
 org.eclipse.*
+
+*.apk
+
+output.json
